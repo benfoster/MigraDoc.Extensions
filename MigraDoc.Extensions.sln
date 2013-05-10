@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{AF4177AE-AA2E-4434-AF32-46604508CBC7}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.Extensions.Html", "src\MigraDoc.Extensions.Html\MigraDoc.Extensions.Html.csproj", "{CA3F8535-EA5E-4362-8922-FFBD86DF498F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "specs", "specs", "{668E5A7D-27EE-4351-922A-16902D13381F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.Extensions.Html.Specs", "src\specs\MigraDoc.Extensions.Html.Specs\MigraDoc.Extensions.Html.Specs.csproj", "{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA3F8535-EA5E-4362-8922-FFBD86DF498F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA3F8535-EA5E-4362-8922-FFBD86DF498F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA3F8535-EA5E-4362-8922-FFBD86DF498F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA3F8535-EA5E-4362-8922-FFBD86DF498F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593} = {668E5A7D-27EE-4351-922A-16902D13381F}
+	EndGlobalSection
+EndGlobal
