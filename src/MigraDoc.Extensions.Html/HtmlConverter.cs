@@ -89,6 +89,12 @@ namespace MigraDoc.Extensions.Html
             {
                 return GetParagraph(parent).AddHyperlink(node.GetAttributeValue("href", ""), HyperlinkType.Web);
             });
+            nodeHandlers.Add("hr", (node, parent) => GetParagraph(parent).SetStyle("HorizontalRule"));
+            nodeHandlers.Add("br", (node, parent) => {
+                var paragraph = GetParagraph(parent);
+                paragraph.AddLineBreak();
+                return paragraph;
+            });
 
             nodeHandlers.Add("li", (node, parent) =>
             {

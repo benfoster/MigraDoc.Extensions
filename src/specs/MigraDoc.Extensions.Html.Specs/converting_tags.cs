@@ -1,5 +1,6 @@
 ﻿using MigraDoc.DocumentObjectModel;
 using NSpec;
+using System;
 
 namespace MigraDoc.Extensions.Html.Specs
 {
@@ -46,62 +47,19 @@ namespace MigraDoc.Extensions.Html.Specs
             };
         }
 
-        void heading_tag()
+        void heading_tags()
         {
-            before = () => html = "<h1></h1>";
-
-            it["adds a paragraph with the relevant 'HeadingX' style"] = ()
-                => pdf.LastParagraph.Style.should_be("Heading1");
-
-            context["when the tag contains text"] = () =>
+            new[] { 1, 2, 3, 4, 5, 6 }.Do(x =>
             {
-                before = () => html = "<h1>test</h1>";
-                it["the paragraph should contain the provided text"] = ()
-                    => pdf.LastParagraph.Elements[0].should_cast_to<Text>()
-                        .Content.should_be("test");
-            };
-        }
+                context["heading{0} tag".With(x)] = () =>
+                {
+                    pdf = new Section();
+                    pdf.AddHtml("<h{0}></h{0}>".With(x));
 
-        void heading1_tag()
-        {
-            before = () => html = "<h1></h1>";
-            it["adds a paragraph with style 'Heading1'"] = ()
-                => pdf.LastParagraph.Style.should_be("Heading1");
-        }
-
-        void heading2_tag()
-        {
-            before = () => html = "<h2></h2>";
-            it["adds a paragraph with style 'Heading2'"] = ()
-                => pdf.LastParagraph.Style.should_be("Heading2");
-        } 
-
-        void heading3_tag()
-        {
-            before = () => html = "<h3></h3>";
-            it["adds a paragraph with style 'Heading3'"] = ()
-                => pdf.LastParagraph.Style.should_be("Heading3");
-        }
-
-        void heading4_tag()
-        {
-            before = () => html = "<h4></h4>";
-            it["adds a paragraph with style 'Heading4'"] = ()
-                => pdf.LastParagraph.Style.should_be("Heading4");
-        }
-
-        void heading5_tag()
-        {
-            before = () => html = "<h5></h5>";
-            it["adds a paragraph with style 'Heading5'"] = ()
-                => pdf.LastParagraph.Style.should_be("Heading5");
-        }
-
-        void heading6_tag()
-        {
-            before = () => html = "<h6></h6>";
-            it["adds a paragraph with style 'Heading6'"] = ()
-                => pdf.LastParagraph.Style.should_be("Heading6");
+                    it["adds a paragraph with the style 'Heading{0}'".With(x)] = ()
+                        => pdf.LastParagraph.Style = "Heading{0}".With(x);
+                };
+            });
         }
 
         void strong_tag()
@@ -116,6 +74,15 @@ namespace MigraDoc.Extensions.Html.Specs
         void italic_tag()
         {
             before = () => html = "<i>test</i>";
+            it["adds a paragraph with italic text"] = ()
+                => pdf.LastParagraph.should_not_be_null()
+                    .Elements[0].should_cast_to<FormattedText>()
+                        .Italic.should_be_true();
+        }
+
+        void emphasis_tag()
+        {
+            before = () => html = "<em>test</em>";
             it["adds a paragraph with italic text"] = ()
                 => pdf.LastParagraph.should_not_be_null()
                     .Elements[0].should_cast_to<FormattedText>()
@@ -159,7 +126,7 @@ namespace MigraDoc.Extensions.Html.Specs
 
             it["adds a hyperlink"] = () => link.should_not_be_null();
             it["sets the link to the anchor's href"] = () => link.Name.should_be("http://www.google.com");
-            it["contains the anchor text"] = () 
+            it["contains the anchor text"] = ()
                 => link.Elements[0].should_cast_to<Text>()
                     .Content.should_be("test");
         }
@@ -210,17 +177,34 @@ namespace MigraDoc.Extensions.Html.Specs
                 </ul>
             ";
 
-            it["adds a paragraph for each list item with the style 'UnorderedList'"] = () 
-                => {
+            it["adds a paragraph for each list item with the style 'UnorderedList'"] = ()
+                =>
+            {
 
-                    pdf.Elements.Count.should_be(3);
-                    for (int i = 0, j = pdf.Elements.Count; i < j; i++)
-                    {
-                        var li = pdf.Elements[i] as Paragraph;
-                        li.Style.should_be("UnorderedList");
-                    }
+                pdf.Elements.Count.should_be(3);
+                for (int i = 0, j = pdf.Elements.Count; i < j; i++)
+                {
+                    var li = pdf.Elements[i] as Paragraph;
+                    li.Style.should_be("UnorderedList");
+                }
             };
-          
+        }
+
+        void horizontal_rule_tag()
+        {
+            before = () => html = "<hr/>";
+
+            it["adds a paragraph with the style 'HorizontalRule'"] = ()
+                => pdf.LastParagraph.Style.should_be("HorizontalRule");
+        }
+
+        void line_break()
+        {
+            before = () => html = "<br/>";
+
+            it["adds a line break to the paragraph"] = ()
+                => pdf.LastParagraph.Elements[0].should_cast_to<Character>()
+                        .SymbolName.should_be(SymbolName.LineBreak);
         }
     }
 }

@@ -13,9 +13,18 @@ namespace MigraDoc.Extensions.Markdown
         {
             options = new MarkdownOptions
             {
-                AutoNewLines = true,
                 LinkEmails = true
             };
+        }
+
+        public MarkdownConverter(MarkdownOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException("options");
+            }
+
+            this.options = options;
         }
         
         public Action<Section> Convert(string contents)

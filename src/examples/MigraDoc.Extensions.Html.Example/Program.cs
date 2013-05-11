@@ -88,6 +88,14 @@ namespace MigraDoc.Extensions.Html.Example
 
             var orderedlist = doc.AddStyle("OrderedList", "UnorderedList");
             orderedlist.ParagraphFormat.ListInfo.ListType = ListType.NumberList1;
+
+            var hr = doc.AddStyle("HorizontalRule", "Normal");
+            var hrBorder = new Border();
+            hrBorder.Width = "1pt";
+            hrBorder.Color = Colors.DarkGray;
+            hr.ParagraphFormat.Borders.Bottom = hrBorder;
+            hr.ParagraphFormat.LineSpacing = 0;
+            hr.ParagraphFormat.SpaceBefore = 15;
         }
     }
 }
