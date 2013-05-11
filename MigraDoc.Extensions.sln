@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "specs", "specs", "{668E5A7D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.Extensions.Html.Specs", "src\specs\MigraDoc.Extensions.Html.Specs\MigraDoc.Extensions.Html.Specs.csproj", "{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{22E2B3C0-7306-48B8-99C5-71796200CF86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.Extensions.Html.Example", "src\examples\MigraDoc.Extensions.Html.Example\MigraDoc.Extensions.Html.Example.csproj", "{2383AE62-1D25-40DC-AF73-0CA020E96C7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,11 +32,16 @@ Global
 		{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2383AE62-1D25-40DC-AF73-0CA020E96C7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2383AE62-1D25-40DC-AF73-0CA020E96C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2383AE62-1D25-40DC-AF73-0CA020E96C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2383AE62-1D25-40DC-AF73-0CA020E96C7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CFBA7EB2-7A2F-4086-8EF7-7197DCDEE593} = {668E5A7D-27EE-4351-922A-16902D13381F}
+		{2383AE62-1D25-40DC-AF73-0CA020E96C7E} = {22E2B3C0-7306-48B8-99C5-71796200CF86}
 	EndGlobalSection
 EndGlobal

@@ -41,6 +41,13 @@
     <Reference Include="MigraDoc.RtfRendering">
       <HintPath>..\..\..\packages\PDFsharp-MigraDoc-GDI.1.32.3879.0\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
     </Reference>
+    <Reference Include="NSpec, Version=0.9.66.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\nspec.0.9.66\lib\NSpec.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="PdfSharp">
       <HintPath>..\..\..\packages\PDFsharp-MigraDoc-GDI.1.32.3879.0\lib\net20\PdfSharp.dll</HintPath>
     </Reference>
@@ -57,10 +64,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="converting_tags.cs" />
+    <Compile Include="DebuggerShim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MigraDoc.Extensions.Html\MigraDoc.Extensions.Html.csproj">
+      <Project>{ca3f8535-ea5e-4362-8922-ffbd86df498f}</Project>
+      <Name>MigraDoc.Extensions.Html</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
