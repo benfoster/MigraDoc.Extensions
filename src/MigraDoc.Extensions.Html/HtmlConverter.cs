@@ -95,7 +95,7 @@ namespace MigraDoc.Extensions.Html
                     ? "UnorderedList"
                     : "OrderedList";
                 
-                return ((Section)parent).AddParagraph().AddStyle(listStyle);
+                return ((Section)parent).AddParagraph().SetStyle(listStyle);
             });
 
             nodeHandlers.Add("#text", (node, parent) =>
@@ -137,7 +137,7 @@ namespace MigraDoc.Extensions.Html
 
         private static DocumentObject AddHeading(HtmlNode node, DocumentObject parent)
         {
-            return ((Section)parent).AddParagraph().AddStyle("Heading" + node.Name[1]);
+            return ((Section)parent).AddParagraph().SetStyle("Heading" + node.Name[1]);
         }
 
         private static Paragraph GetParagraph(DocumentObject parent)

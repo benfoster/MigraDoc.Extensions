@@ -5,7 +5,7 @@ namespace MigraDoc.Extensions.Html
 {
     public static class ParagraphExtensions
     {
-        public static Paragraph AddStyle(this Paragraph paragraph, string style)
+        public static Paragraph SetStyle(this Paragraph paragraph, string style)
         {
             if (paragraph == null)
             {
