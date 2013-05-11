@@ -1,7 +1,7 @@
 ﻿using MigraDoc.DocumentObjectModel;
 using System;
 
-namespace MigraDoc.Extensions.Html
+namespace MigraDoc.Extensions
 {
     public static class ParagraphExtensions
     {

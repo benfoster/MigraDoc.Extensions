@@ -1,12 +1,8 @@
 ﻿using MigraDoc.DocumentObjectModel;
+using MigraDoc.Extensions.Markdown;
 using MigraDoc.Rendering;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MigraDoc.Extensions.Html.Example
 {
@@ -33,6 +29,9 @@ namespace MigraDoc.Extensions.Html.Example
 
             var html = File.ReadAllText("example.html");
             section.AddHtml(html);
+
+            var markdown = File.ReadAllText("example.md");
+            section.AddMarkdown(markdown);
 
             var renderer = new PdfDocumentRenderer();
             renderer.Document = doc;

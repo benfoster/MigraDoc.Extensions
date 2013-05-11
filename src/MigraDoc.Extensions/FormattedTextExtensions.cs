@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MigraDoc.Extensions.Html
+namespace MigraDoc.Extensions
 {
     public static class FormattedTextExtensions
     {

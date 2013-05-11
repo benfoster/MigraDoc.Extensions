@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MigraDoc.Extensions.Html
 {
-    public class HtmlConverter
+    public class HtmlConverter : IConverter
     {
         private IDictionary<string, Func<HtmlNode, DocumentObject, DocumentObject>> nodeHandlers
             = new Dictionary<string, Func<HtmlNode, DocumentObject, DocumentObject>>();
@@ -15,9 +15,9 @@ namespace MigraDoc.Extensions.Html
             AddDefaultNodeHandlers();
         }
         
-        public Action<Section> Convert(string html)
+        public Action<Section> Convert(string contents)
         {
-            return section => ConvertHtml(html, section);
+            return section => ConvertHtml(contents, section);
         }
 
         private void ConvertHtml(string html, Section section)
@@ -83,6 +83,7 @@ namespace MigraDoc.Extensions.Html
 
             nodeHandlers.Add("strong", (node, parent) => AddFormattedText(node, parent, TextFormat.Bold));
             nodeHandlers.Add("i", (node, parent) => AddFormattedText(node, parent, TextFormat.Italic));
+            nodeHandlers.Add("em", (node, parent) => AddFormattedText(node, parent, TextFormat.Italic));
             nodeHandlers.Add("u", (node, parent) => AddFormattedText(node, parent, TextFormat.Underline));
             nodeHandlers.Add("a", (node, parent) =>
             {

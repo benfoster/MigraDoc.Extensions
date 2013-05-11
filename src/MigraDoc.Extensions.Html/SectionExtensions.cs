@@ -1,20 +1,14 @@
 ﻿using MigraDoc.DocumentObjectModel;
+using MigraDoc.Extensions.Html;
 using System;
 
 namespace MigraDoc.Extensions.Html
 {
     public static class SectionExtensions
     {
-        public static void AddHtml(this Section section, string html)
+        public static Section AddHtml(this Section section, string html)
         {
-            if (string.IsNullOrEmpty(html))
-            {
-                throw new ArgumentNullException("html");
-            }
-
-            var converter = new HtmlConverter();
-            var conversion = converter.Convert(html);
-            conversion(section);
+            return section.Add(html, new HtmlConverter());
         }
     }
 }
