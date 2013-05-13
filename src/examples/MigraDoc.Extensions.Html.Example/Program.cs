@@ -89,6 +89,13 @@ namespace MigraDoc.Extensions.Html.Example
             var orderedlist = doc.AddStyle("OrderedList", "UnorderedList");
             orderedlist.ParagraphFormat.ListInfo.ListType = ListType.NumberList1;
 
+            // for list spacing (since MigraDoc doesn't provide a list object that we can target)
+            var listStart = doc.AddStyle("ListStart", "Normal");
+            listStart.ParagraphFormat.SpaceAfter = 0;
+            listStart.ParagraphFormat.LineSpacing = 0.5;
+            var listEnd = doc.AddStyle("ListEnd", "ListStart");
+            listEnd.ParagraphFormat.LineSpacing = 1;
+
             var hr = doc.AddStyle("HorizontalRule", "Normal");
             var hrBorder = new Border();
             hrBorder.Width = "1pt";

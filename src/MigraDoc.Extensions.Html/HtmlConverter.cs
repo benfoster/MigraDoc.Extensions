@@ -2,6 +2,7 @@
 using MigraDoc.DocumentObjectModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MigraDoc.Extensions.Html
 {
@@ -101,8 +102,29 @@ namespace MigraDoc.Extensions.Html
                 var listStyle = node.ParentNode.Name == "ul"
                     ? "UnorderedList"
                     : "OrderedList";
-                
-                return ((Section)parent).AddParagraph().SetStyle(listStyle);
+
+                var section = (Section)parent;
+                var isFirst = node.ParentNode.Elements("li").First() == node;
+                var isLast = node.ParentNode.Elements("li").Last() == node; 
+
+                // if this is the first item add the ListStart paragraph
+                if (isFirst)
+                {
+                    section.AddParagraph().SetStyle("ListStart");
+                }
+
+                var listItem = section.AddParagraph().SetStyle(listStyle);
+
+                // disable continuation if this is the first list item
+                listItem.Format.ListInfo.ContinuePreviousList = !isFirst;
+
+                // if the this is the last item add the ListEnd paragraph
+                if (isLast)
+                {
+                    section.AddParagraph().SetStyle("ListEnd");
+                }
+
+                return listItem;
             });
 
             nodeHandlers.Add("#text", (node, parent) =>
@@ -150,6 +172,11 @@ namespace MigraDoc.Extensions.Html
         private static Paragraph GetParagraph(DocumentObject parent)
         {
             return parent as Paragraph ?? ((Section)parent).AddParagraph();
+        }
+
+        private static Paragraph AddParagraphWithStyle(DocumentObject parent, string style) 
+        {
+            return ((Section)parent).AddParagraph().SetStyle(style);
         }
     }
 }

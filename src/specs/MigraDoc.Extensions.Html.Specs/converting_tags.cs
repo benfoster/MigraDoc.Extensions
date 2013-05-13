@@ -177,17 +177,82 @@ namespace MigraDoc.Extensions.Html.Specs
                 </ul>
             ";
 
+            it["adds an opening paragraph to the start of the list with style 'ListStart'"] = ()
+                => pdf.Elements[0].should_cast_to<Paragraph>().Style.should_be("ListStart");
+ 
             it["adds a paragraph for each list item with the style 'UnorderedList'"] = ()
                 =>
             {
-
-                pdf.Elements.Count.should_be(3);
-                for (int i = 0, j = pdf.Elements.Count; i < j; i++)
+                pdf.Elements.Count.should_be(5); // including the start/close paragraphs
+                for (int i = 1, j = pdf.Elements.Count - 1; i < j; i++)
                 {
                     var li = pdf.Elements[i] as Paragraph;
                     li.Style.should_be("UnorderedList");
                 }
             };
+            
+            it["adds a closing paragraph to the end of the list with style 'ListEnd'"] = ()
+                => pdf.LastParagraph.Style.should_be("ListEnd"); 
+        }
+
+        void ordered_list()
+        {
+            before = () => html = @"
+                <ol>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                </ol>
+            ";
+
+            it["adds an opening paragraph to the start of the list with style 'ListStart'"] = ()
+                => pdf.Elements[0].should_cast_to<Paragraph>().Style.should_be("ListStart");
+
+            it["adds a paragraph for each list item with the style 'OrderedList'"] = ()
+            =>
+                {
+                    pdf.Elements.Count.should_be(5);
+                    for (int i = 1, j = pdf.Elements.Count - 1; i < j; i++)
+                    {
+                        var li = pdf.Elements[i] as Paragraph;
+                        li.Style.should_be("OrderedList");
+                    }
+                };
+
+            it["adds a closing paragraph to the end of the list with style 'ListEnd'"] = ()
+                => pdf.LastParagraph.Style.should_be("ListEnd"); 
+        }
+
+        void multiple_ordered_lists()
+        {
+            before = () => html = @"
+                <ol>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                </ol>
+                <ol>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                </ol>
+            ";
+            
+            it["restarts numbering for each list"] = () =>
+            {
+                pdf.Elements[1].should_cast_to<Paragraph>() 
+                    .Format.ListInfo.ContinuePreviousList.should_be_false();
+
+                pdf.Elements[2].should_cast_to<Paragraph>()
+                    .Format.ListInfo.ContinuePreviousList.should_be_true();
+
+                // first item in the second list should not continue numbering
+                pdf.Elements[4].should_cast_to<Paragraph>()
+                    .Format.ListInfo.ContinuePreviousList.should_be_false();
+            };
+
+            it["still adds the 'ListEnd' paragraph"] = () 
+                => pdf.LastParagraph.Style.should_be("ListEnd");
         }
 
         void horizontal_rule_tag()
