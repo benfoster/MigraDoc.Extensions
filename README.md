@@ -38,7 +38,7 @@ Import the `MigraDoc.Extensions.Html` namespace and call `AddHtml` on a MigraDoc
 	var html = @"
 		<h1>This is a heading</h1>
 
-		<p>This is some **bold** ass text with a <a href-'http://www.google.com'>link</a>.<p>
+		<p>This is some **bold** ass text with a <a href='http://www.google.com'>link</a>.<p>
 
 		<ul>
 			<li>List Item 1</li>
