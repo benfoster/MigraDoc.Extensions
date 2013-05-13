@@ -15,6 +15,14 @@ namespace MigraDoc.Extensions.Html
         {
             AddDefaultNodeHandlers();
         }
+
+        public IDictionary<string, Func<HtmlNode, DocumentObject, DocumentObject>> NodeHandlers
+        {
+            get
+            {
+                return nodeHandlers;
+            }
+        }
         
         public Action<Section> Convert(string contents)
         {

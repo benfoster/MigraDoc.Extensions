@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="MigraDoc.DocumentObjectModel">
       <HintPath>..\..\..\packages\PDFsharp-MigraDoc-GDI.1.32.3879.0\lib\net20\MigraDoc.DocumentObjectModel.dll</HintPath>
     </Reference>
@@ -66,6 +70,7 @@
   <ItemGroup>
     <Compile Include="converting_tags.cs" />
     <Compile Include="DebuggerShim.cs" />
+    <Compile Include="define_htmlconverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +80,10 @@
     <ProjectReference Include="..\..\MigraDoc.Extensions.Html\MigraDoc.Extensions.Html.csproj">
       <Project>{ca3f8535-ea5e-4362-8922-ffbd86df498f}</Project>
       <Name>MigraDoc.Extensions.Html</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MigraDoc.Extensions\MigraDoc.Extensions.csproj">
+      <Project>{1863068f-975c-4f5b-aba7-fba344709a48}</Project>
+      <Name>MigraDoc.Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

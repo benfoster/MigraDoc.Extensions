@@ -1,12 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MigraDoc.DocumentObjectModel;
+using NSpec;
 
 namespace MigraDoc.Extensions.Html.Specs
 {
-    class define_htmlconverter
+    class define_htmlconverter : nspec
     {
+        HtmlConverter converter;
+        Section pdf;
+
+        void before_each()
+        {
+            converter = new HtmlConverter();
+            pdf = new Section();
+        }
+        
+        void adding_custom_handlers()
+        {
+            before = () => converter.NodeHandlers.Add(
+                    "img", (node, parent) => ((Section)parent).AddParagraph()
+                );
+            
+            act = () => pdf.Add("<img/>", converter);
+
+            it["adds the handler to the converter"] = ()
+                => converter.NodeHandlers["img"].should_not_be_null();
+
+            it["uses the handler when processing"] = ()
+                => pdf.LastParagraph.should_not_be_null();
+        }
     }
 }
