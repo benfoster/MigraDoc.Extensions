@@ -5,7 +5,7 @@ using System;
 
 namespace MigraDoc.Extensions.Markdown
 {
-    class MarkdownConverter : IConverter
+    public class MarkdownConverter : IConverter
     {
         private readonly MarkdownOptions options;
 
