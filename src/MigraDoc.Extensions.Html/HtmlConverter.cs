@@ -137,7 +137,8 @@ namespace MigraDoc.Extensions.Html
 
             nodeHandlers.Add("#text", (node, parent) =>
             {
-                var innerText = node.InnerText.Replace(Environment.NewLine, "");
+                // remove line breaks
+                var innerText = node.InnerText.Replace("\r", "").Replace("\n", "");
 
                 if (string.IsNullOrWhiteSpace(innerText))
                 {

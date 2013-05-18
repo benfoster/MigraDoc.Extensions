@@ -3,6 +3,13 @@
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque laoreet nibh sit amet lacus ultrices in mollis sapien eleifend.
 Mauris congue luctus elit sit amet elementum. Integer nisl sapien, tristique et venenatis nec, auctor ac risus. Pellentesque et nisl eu risus pretium elementum.
 
+This 
+should 
+collapse 
+to 
+one 
+line
+
 ---
 
 Sed non eros metus, in posuere dui. Nunc lobortis tellus vitae dolor sodales quis aliquet augue malesuada. Donec orci sem, imperdiet a suscipit eu, interdum sed ipsum. Donec ullamcorper consequat mauris, non faucibus elit placerat sed. Etiam luctus commodo tristique.

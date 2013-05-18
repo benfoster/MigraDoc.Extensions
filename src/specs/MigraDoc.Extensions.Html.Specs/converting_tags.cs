@@ -167,6 +167,14 @@ namespace MigraDoc.Extensions.Html.Specs
                 => pdf.Elements.Count.should_be(2);
         }
 
+        void line_breaks_between_text_elements()
+        {
+            before = () => html = "this\nshould\nbe\ncollapsed";
+
+            it["removes the line breaks"] = ()
+                => pdf.LastParagraph.Elements.Count.should_be(1);
+        }
+
         void unordered_list()
         {
             before = () => html = @"
