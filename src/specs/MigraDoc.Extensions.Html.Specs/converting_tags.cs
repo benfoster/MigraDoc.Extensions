@@ -29,6 +29,15 @@ namespace MigraDoc.Extensions.Html.Specs
                         .Content.should_be("test");
         }
 
+        void html_encoded_text()
+        {
+            before = () => html = "&lt;Me &amp; You&gt;";
+
+            it["decodes the html"] = ()
+                => pdf.LastParagraph.Elements[0].should_cast_to<Text>()
+                    .Content.should_be("<Me & You>");
+        }
+
         void paragraph_tag()
         {
             context["when the tag is empty"] = () =>

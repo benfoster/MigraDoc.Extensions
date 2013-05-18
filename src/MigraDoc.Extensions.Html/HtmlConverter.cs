@@ -3,6 +3,7 @@ using MigraDoc.DocumentObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace MigraDoc.Extensions.Html
 {
@@ -144,6 +145,9 @@ namespace MigraDoc.Extensions.Html
                 {
                     return parent;
                 }
+
+                // decode escaped HTML
+                innerText = WebUtility.HtmlDecode(innerText);
                 
                 // text elements must be wrapped in a paragraph but this could also be FormattedText or a Hyperlink!!
                 // this needs some work
