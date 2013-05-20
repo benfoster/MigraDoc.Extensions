@@ -101,6 +101,13 @@ namespace MigraDoc.Extensions.Html
             });
             nodeHandlers.Add("hr", (node, parent) => GetParagraph(parent).SetStyle("HorizontalRule"));
             nodeHandlers.Add("br", (node, parent) => {
+                if (parent is FormattedText)
+                {
+                    // inline elements can contain line breaks
+                    ((FormattedText)parent).AddLineBreak();
+                    return parent;
+                }
+                                
                 var paragraph = GetParagraph(parent);
                 paragraph.AddLineBreak();
                 return paragraph;

@@ -80,6 +80,16 @@ namespace MigraDoc.Extensions.Html.Specs
                         .Bold.should_be_true();
         }
 
+        // edge case
+        void line_break_within_strong_tag()
+        {
+            before = () => html = "<strong>test<br/>test2</strong>";
+            it["adds bold text with a line break"] = ()
+                => pdf.LastParagraph.Elements[0].should_cast_to<FormattedText>()
+                    .Elements[1].should_cast_to<Character>()
+                        .SymbolName.should_be(SymbolName.LineBreak);
+        }
+
         void italic_tag()
         {
             before = () => html = "<i>test</i>";
