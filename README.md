@@ -6,7 +6,7 @@ Extensions for [MigraDoc/PDFSharp](http://www.pdfsharp.net/Overview.ashx).
 The tests are not updated to include the new support for html nested lists!
 Use on your own risk!
 
-The included example project is update to have different example of nested lists.
+The included example project is updated to have different example of nested lists.
 
 ## Quick Start
 
