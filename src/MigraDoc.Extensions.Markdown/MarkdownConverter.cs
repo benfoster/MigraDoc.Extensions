@@ -7,32 +7,35 @@ namespace MigraDoc.Extensions.Markdown
 {
     public class MarkdownConverter : IConverter
     {
-        private readonly MarkdownOptions options;
+        private readonly MarkdownOptions _options;
+        private readonly double _nestedListStartingLeftIndent = 1.0;
 
-        public MarkdownConverter()
+        public MarkdownConverter(double nestedListStartingLeftIndent)
         {
-            options = new MarkdownOptions
+            _options = new MarkdownOptions
             {
                 LinkEmails = true
             };
+            _nestedListStartingLeftIndent = nestedListStartingLeftIndent;
         }
 
-        public MarkdownConverter(MarkdownOptions options)
+        public MarkdownConverter(MarkdownOptions options, double nestedListStartingLeftIndent)
         {
             if (options == null)
             {
                 throw new ArgumentNullException("options");
             }
 
-            this.options = options;
+            this._options = options;
+            _nestedListStartingLeftIndent = nestedListStartingLeftIndent;
         }
         
         public Action<Section> Convert(string contents)
         {
-            var converter = new MarkdownSharp.Markdown(options);
+            var converter = new MarkdownSharp.Markdown(_options);
             var html = converter.Transform(contents);
 
-            var htmlConverter = new HtmlConverter();
+            var htmlConverter = new HtmlConverter(_nestedListStartingLeftIndent);
             return htmlConverter.Convert(html);
         }
     }
