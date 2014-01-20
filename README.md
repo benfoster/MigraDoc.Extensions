@@ -2,6 +2,12 @@
 
 Extensions for [MigraDoc/PDFSharp](http://www.pdfsharp.net/Overview.ashx).
 
+## Remark
+The tests are not updated to include the new support for html nested lists!
+Use on your own risk!
+
+The included example project is update to have different example of nested lists.
+
 ## Quick Start
 
 The biggest feature provided by this library is the ability to convert from HTML and Markdown to PDF, via MigraDoc's Document Object Model.
