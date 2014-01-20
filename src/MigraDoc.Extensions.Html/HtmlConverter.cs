@@ -9,15 +9,18 @@ namespace MigraDoc.Extensions.Html
 {
     public class HtmlConverter : IConverter
     {
-        private IDictionary<string, Func<HtmlNode, DocumentObject, DocumentObject>> nodeHandlers
-            = new Dictionary<string, Func<HtmlNode, DocumentObject, DocumentObject>>();
+        private IDictionary<string, Func<HtmlNode, DocumentObject, DocumentObject, DocumentObject>> nodeHandlers
+            = new Dictionary<string, Func<HtmlNode, DocumentObject, DocumentObject, DocumentObject>>();
            
-        public HtmlConverter()
+        private readonly double _nestedListStartingLeftIndent = 1.0;
+
+        public HtmlConverter(double nestedListStartingLeftIndent)
         {
+            _nestedListStartingLeftIndent = nestedListStartingLeftIndent;
             AddDefaultNodeHandlers();
         }
 
-        public IDictionary<string, Func<HtmlNode, DocumentObject, DocumentObject>> NodeHandlers
+        public IDictionary<string, Func<HtmlNode, DocumentObject, DocumentObject, DocumentObject>> NodeHandlers
         {
             get
             {
@@ -51,11 +54,11 @@ namespace MigraDoc.Extensions.Html
         {
             foreach (var node in nodes)
             {
-                Func<HtmlNode, DocumentObject, DocumentObject> nodeHandler;
+                Func<HtmlNode, DocumentObject, DocumentObject, DocumentObject> nodeHandler;
                 if (nodeHandlers.TryGetValue(node.Name, out nodeHandler))
                 {
                     // pass the current container or section
-                    var result = nodeHandler(node, current ?? section);
+                    var result = nodeHandler(node, current ?? section, section);
                     
                     if (node.HasChildNodes)
                     {
@@ -84,23 +87,24 @@ namespace MigraDoc.Extensions.Html
             nodeHandlers.Add("h5", AddHeading);
             nodeHandlers.Add("h6", AddHeading);
 
-            nodeHandlers.Add("p", (node, parent) =>
+            nodeHandlers.Add("p", (node, parent, parentSection) =>
             {
                 return ((Section)parent).AddParagraph();
             });
 
             // Inline Elements
 
-            nodeHandlers.Add("strong", (node, parent) => AddFormattedText(node, parent, TextFormat.Bold));
-            nodeHandlers.Add("i", (node, parent) => AddFormattedText(node, parent, TextFormat.Italic));
-            nodeHandlers.Add("em", (node, parent) => AddFormattedText(node, parent, TextFormat.Italic));
-            nodeHandlers.Add("u", (node, parent) => AddFormattedText(node, parent, TextFormat.Underline));
-            nodeHandlers.Add("a", (node, parent) =>
+            nodeHandlers.Add("strong", (node, parent, parentSection) => AddFormattedText(node, parent, TextFormat.Bold));
+            nodeHandlers.Add("i", (node, parent, parentSection) => AddFormattedText(node, parent, TextFormat.Italic));
+            nodeHandlers.Add("em", (node, parent, parentSection) => AddFormattedText(node, parent, TextFormat.Italic));
+            nodeHandlers.Add("u", (node, parent, parentSection) => AddFormattedText(node, parent, TextFormat.Underline));
+            nodeHandlers.Add("a", (node, parent, parentSection) =>
             {
                 return GetParagraph(parent).AddHyperlink(node.GetAttributeValue("href", ""), HyperlinkType.Web);
             });
-            nodeHandlers.Add("hr", (node, parent) => GetParagraph(parent).SetStyle("HorizontalRule"));
-            nodeHandlers.Add("br", (node, parent) => {
+            nodeHandlers.Add("hr", (node, parent, parentSection) => GetParagraph(parent).SetStyle("HorizontalRule"));
+            nodeHandlers.Add("br", (node, parent, parentSection) =>
+            {
                 if (parent is FormattedText)
                 {
                     // inline elements can contain line breaks
@@ -113,13 +117,28 @@ namespace MigraDoc.Extensions.Html
                 return paragraph;
             });
 
-            nodeHandlers.Add("li", (node, parent) =>
+            nodeHandlers.Add("li", (node, parent, parentSection) =>
             {
                 var listStyle = node.ParentNode.Name == "ul"
-                    ? "UnorderedList"
-                    : "OrderedList";
+                    ? "UnorderedList{0}"
+                    : "OrderedList{0}";
 
-                var section = (Section)parent;
+                var section = parent as Section;
+                int nestedLevelSameType = 1;
+                int nestedLevel = 1;
+                // if section == null then nested lists
+                if (section == null)
+                {
+                    section = (Section) parentSection;
+
+                    // get the nested level for the parent type
+                    nestedLevelSameType = (node.Ancestors().Count(a => a.Name.Equals(node.ParentNode.Name))) + 1;
+                    // get the nested level for all the types (ol or ul)
+                    nestedLevel = (node.Ancestors().Count(a => a.Name.Equals("ol") || a.Name.Equals("ul"))) + 1;
+                    // limit the levels to 3 because no more possible in MigraDoc
+                    if (nestedLevelSameType > 3) nestedLevelSameType = 3;
+                }
+
                 var isFirst = node.ParentNode.Elements("li").First() == node;
                 var isLast = node.ParentNode.Elements("li").Last() == node; 
 
@@ -129,7 +148,13 @@ namespace MigraDoc.Extensions.Html
                     section.AddParagraph().SetStyle("ListStart");
                 }
 
-                var listItem = section.AddParagraph().SetStyle(listStyle);
+                Paragraph listItem = section.AddParagraph().SetStyle(string.Format(listStyle, nestedLevelSameType));
+                // adapt indent if nested lists
+                if (nestedLevel > 0)
+                {
+                    double leftIndent = _nestedListStartingLeftIndent + System.Convert.ToDouble(nestedLevel) / 2;
+                    listItem.Format.LeftIndent = new Unit(leftIndent, UnitType.Centimeter);
+                }
 
                 // disable continuation if this is the first list item
                 listItem.Format.ListInfo.ContinuePreviousList = !isFirst;
@@ -139,11 +164,40 @@ namespace MigraDoc.Extensions.Html
                 {
                     section.AddParagraph().SetStyle("ListEnd");
                 }
-
                 return listItem;
             });
 
-            nodeHandlers.Add("#text", (node, parent) =>
+            //nodeHandlers.Add("li", (node, parent) =>
+            //{
+            //    var listStyle = node.ParentNode.Name == "ul"
+            //        ? "UnorderedList"
+            //        : "OrderedList";
+
+            //    var section = (Section)parent;
+            //    var isFirst = node.ParentNode.Elements("li").First() == node;
+            //    var isLast = node.ParentNode.Elements("li").Last() == node;
+
+            //    // if this is the first item add the ListStart paragraph
+            //    if (isFirst)
+            //    {
+            //        section.AddParagraph().SetStyle("ListStart");
+            //    }
+
+            //    var listItem = section.AddParagraph().SetStyle(listStyle);
+
+            //    // disable continuation if this is the first list item
+            //    listItem.Format.ListInfo.ContinuePreviousList = !isFirst;
+
+            //    // if the this is the last item add the ListEnd paragraph
+            //    if (isLast)
+            //    {
+            //        section.AddParagraph().SetStyle("ListEnd");
+            //    }
+
+            //    return listItem;
+            //});
+
+            nodeHandlers.Add("#text", (node, parent, parentSection) =>
             {
                 // remove line breaks
                 var innerText = node.InnerText.Replace("\r", "").Replace("\n", "");
@@ -184,7 +238,7 @@ namespace MigraDoc.Extensions.Html
             return GetParagraph(parent).AddFormattedText(format);
         }
 
-        private static DocumentObject AddHeading(HtmlNode node, DocumentObject parent)
+        private static DocumentObject AddHeading(HtmlNode node, DocumentObject parent, DocumentObject parentSection = null)
         {
             return ((Section)parent).AddParagraph().SetStyle("Heading" + node.Name[1]);
         }

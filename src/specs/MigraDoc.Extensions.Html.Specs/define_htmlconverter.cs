@@ -10,14 +10,14 @@ namespace MigraDoc.Extensions.Html.Specs
 
         void before_each()
         {
-            converter = new HtmlConverter();
+            converter = new HtmlConverter(1.0);
             pdf = new Section();
         }
         
         void adding_custom_handlers()
         {
             before = () => converter.NodeHandlers.Add(
-                    "img", (node, parent) => ((Section)parent).AddParagraph()
+                    "img", (node, parent, parentSection) => ((Section)parent).AddParagraph()
                 );
             
             act = () => pdf.Add("<img/>", converter);
