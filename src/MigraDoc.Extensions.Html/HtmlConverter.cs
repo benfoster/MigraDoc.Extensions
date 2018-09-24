@@ -115,13 +115,14 @@ namespace MigraDoc.Extensions.Html
 
             nodeHandlers.Add("li", (node, parent) =>
             {
+                var indentLevelList = GetIndentLevelList(node);
                 var listStyle = node.ParentNode.Name == "ul"
-                    ? "UnorderedList"
-                    : "OrderedList";
+                    ? $"UnorderedList{ indentLevelList }"
+                    : $"OrderedList{ indentLevelList }";
 
-                var section = (Section)parent;
-                var isFirst = node.ParentNode.Elements("li").First() == node;
-                var isLast = node.ParentNode.Elements("li").Last() == node; 
+                var section = parent as Section ?? parent.Section;
+                var isFirst = IsFirstElementList(node);
+                var isLast = IsLastElementList(node);
 
                 // if this is the first item add the ListStart paragraph
                 if (isFirst)
@@ -197,6 +198,24 @@ namespace MigraDoc.Extensions.Html
         private static Paragraph AddParagraphWithStyle(DocumentObject parent, string style) 
         {
             return ((Section)parent).AddParagraph().SetStyle(style);
+        }
+
+        private static int GetIndentLevelList(HtmlNode node, int countLevel = 1)
+        {
+            var doubleParentNode = node.ParentNode.ParentNode;
+            return doubleParentNode.Name == "li" ? GetIndentLevelList(doubleParentNode, ++countLevel) : countLevel;
+        }
+
+        private static bool IsFirstElementList(HtmlNode node)
+        {
+            var doubleParentNode = node.ParentNode.ParentNode;
+            return (node.ParentNode.Elements("li").First() == node) && (doubleParentNode.Name != "li" || IsFirstElementList(doubleParentNode));
+        }
+
+        private static bool IsLastElementList(HtmlNode node)
+        {
+            var doubleParentNode = node.ParentNode.ParentNode;
+            return (node.ParentNode.Elements("li").Last() == node) && (doubleParentNode.Name != "li" || IsLastElementList(doubleParentNode));
         }
     }
 }

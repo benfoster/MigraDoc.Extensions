@@ -78,16 +78,38 @@ namespace MigraDoc.Extensions.Html.Example
             var links = doc.Styles["Hyperlink"];
             links.Font.Color = green;
 
-            var unorderedlist = doc.AddStyle("UnorderedList", "Normal");
-            var listInfo = new ListInfo();
-            listInfo.ListType = ListType.BulletList1;
-            unorderedlist.ParagraphFormat.ListInfo = listInfo;
-            unorderedlist.ParagraphFormat.LeftIndent = "1cm";
-            unorderedlist.ParagraphFormat.FirstLineIndent = "-0.5cm";
-            unorderedlist.ParagraphFormat.SpaceAfter = 0;
+            var unorderedlist1 = doc.AddStyle("UnorderedList1", "Normal");
+            var listInfo1 = new ListInfo();
+            listInfo1.ListType = ListType.BulletList1;
+            unorderedlist1.ParagraphFormat.ListInfo = listInfo1;
+            unorderedlist1.ParagraphFormat.LeftIndent = "1cm";
+            unorderedlist1.ParagraphFormat.FirstLineIndent = "-0.5cm";
+            unorderedlist1.ParagraphFormat.SpaceAfter = 0;
 
-            var orderedlist = doc.AddStyle("OrderedList", "UnorderedList");
-            orderedlist.ParagraphFormat.ListInfo.ListType = ListType.NumberList1;
+            var unorderedlist2 = doc.AddStyle("UnorderedList2", "Normal");
+            var listInfo2 = new ListInfo();
+            listInfo2.ListType = ListType.BulletList2;
+            unorderedlist2.ParagraphFormat.ListInfo = listInfo2;
+            unorderedlist2.ParagraphFormat.LeftIndent = "2cm";
+            unorderedlist2.ParagraphFormat.FirstLineIndent = "-0.5cm";
+            unorderedlist2.ParagraphFormat.SpaceAfter = 0;
+
+            var unorderedlist3 = doc.AddStyle("UnorderedList3", "Normal");
+            var listInfo3 = new ListInfo();
+            listInfo3.ListType = ListType.BulletList3;
+            unorderedlist3.ParagraphFormat.ListInfo = listInfo3;
+            unorderedlist3.ParagraphFormat.LeftIndent = "3cm";
+            unorderedlist3.ParagraphFormat.FirstLineIndent = "-0.5cm";
+            unorderedlist3.ParagraphFormat.SpaceAfter = 0;
+
+            var orderedlist1 = doc.AddStyle("OrderedList1", "UnorderedList1");
+            orderedlist1.ParagraphFormat.ListInfo.ListType = ListType.NumberList1;
+
+            var orderedlist2 = doc.AddStyle("OrderedList2", "UnorderedList2");
+            orderedlist2.ParagraphFormat.ListInfo.ListType = ListType.NumberList2;
+
+            var orderedlist3 = doc.AddStyle("OrderedList3", "UnorderedList3");
+            orderedlist3.ParagraphFormat.ListInfo.ListType = ListType.NumberList3;
 
             // for list spacing (since MigraDoc doesn't provide a list object that we can target)
             var listStart = doc.AddStyle("ListStart", "Normal");
